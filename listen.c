@@ -70,7 +70,12 @@ void this_socket(){
     #endif
     printf("accepted\n");
     char buff[2048];
+    while(1)
+    {    
+    memset(buff,0,2048);
     recv(accpt,buff,2048,0);
+    char exit[]="exit";
+    if(!memcmp(buff,exit,4))break;
     #ifdef SSL_OPEN
     SSL_read(ssl,buff,2048);
     #endif
@@ -79,6 +84,7 @@ void this_socket(){
     SSL_write(ssl,buff,2048);
     #endif
     send(accpt,buff,2048,0);
+    }
     close(fd);
     close(accpt);
     #ifdef SSL_OPEN
